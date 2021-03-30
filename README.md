@@ -3,6 +3,8 @@
 
 *Phishing site attack software that spams random logins to targeted website's form*
 
+![GitHub Logo](/preview.gif)
+
 **NOTE: Author nor maintainers are NOT liable for users taking advantage of brutaLog against innocent websites or software!**
 
 If you feel someone is using BrutaLog against your website maliciously. Please contact your system admin or make sure your services are setup to IP block large requests that failed to auth or web services that can properly filter legitamit logins perhaps using frontend methods to ensure proper tokens are passed when a login attempt occures.
