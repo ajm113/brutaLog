@@ -43,7 +43,7 @@ func loadFlagIntoConfig() (c *bruteLogConfig) {
 
 	HTTPMethod := flag.String("X", "POST", "POST method")
 	HTTPContentType := flag.String("C", "application/x-www-form-urlencoded", "Content-Type header field.")
-	HTTPTimeout := flag.Int("T", 2, "Number of seconds to timeout HTTP requests.")
+	HTTPTimeout := flag.Int("T", 10, "Number of seconds to timeout HTTP requests.")
 
 	userFieldName := flag.String("U", "user", "User field name to send to server.")
 	passwordFieldName := flag.String("P", "password", "Password field name to send to server.")
