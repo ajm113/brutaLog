@@ -3,7 +3,7 @@
 
 *Phishing site attack software that spams random logins to targeted website's form*
 
-![GitHub Logo](/preview.gif)
+![Preview Video](/preview.gif)
 
 **NOTE: Author nor maintainers are NOT liable for users taking advantage of brutaLog against innocent websites or software!**
 
