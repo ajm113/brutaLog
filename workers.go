@@ -19,12 +19,11 @@ type (
 		workers       []*Worker
 		WG            *sync.WaitGroup
 		chErrorCount  chan int
-		ErrorCount    int
+		errorCount    int
 		maxErrorCount int
 
-		UserAgents RainbowTable
-		Emails     RainbowTable
-		Passwords  RainbowTable
+		mutex sync.Mutex
+		h     *handle
 	}
 )
 
@@ -33,55 +32,72 @@ func (w *Worker) Do(m *Manager) {
 
 	requestsSent := 0
 	for {
+		delay := rand.Intn(w.MaxDelayBetweenRequests)
+
+		// Since we may not want to float all the requets at once.
+		if w.MaxDelayBetweenRequests != 0 {
+			time.Sleep(time.Duration(delay) * time.Second)
+		}
+
 		requestsSent++
 		requestOptions := w.RequestOptions
 
-		requestOptions.UserAgent = m.UserAgents.GetRandomElement()
-		requestOptions.UserName = m.Emails.GetRandomElement()
+		requestOptions.UserAgent = m.h.UserAgents.GetRandomElement()
+		requestOptions.UserName = m.h.Logins.GetRandomElement()
 
-		if m.Passwords == nil {
+		if m.h.Passwords == nil {
 			requestOptions.Password = generatePassword()
 		} else {
-			requestOptions.Password = m.Passwords.GetRandomElement()
+			requestOptions.Password = m.h.Passwords.GetRandomElement()
 		}
 
-		fmt.Println("sending request", time.Now().Format(time.RFC822), requestOptions.Method, requestOptions.URL)
-		_, err := sendRequest(requestOptions)
+		resp, err := sendRequest(requestOptions)
 
-		// @TODO: Make this work with verbose mode.
-		// fmt.Println("response code:", resp.StatusCode)
-		// for h, v := range resp.Header {
-		// 	fmt.Println(h, ":", v)
-		// }
+		if m.h.IsVerbose {
+			fmt.Println("request response: ", resp.StatusCode)
+			for h, v := range resp.Header {
+				fmt.Println(h, ":", v)
+			}
+		}
 
+		m.mutex.Lock()
+		m.h.Stats.RequestsMade++
 		if err != nil {
-			fmt.Println("failed sending request for the following: ", err)
-			m.ErrorCount++
-			m.chErrorCount <- m.ErrorCount
+			fmt.Println("failed sending request: ", err)
+			m.errorCount++
+			m.h.Stats.RequestsFailed++
 		} else {
-			m.chErrorCount <- m.ErrorCount
+			m.h.Stats.RequestsSuccessed++
+			m.errorCount = 0
 		}
+		m.mutex.Unlock()
+
+		m.chErrorCount <- m.errorCount
+
+		fmt.Printf("[%s] request %s sent to: %s [%d:%d] elapsed time: %s | errors: %d\n",
+			time.Now().Format("01/02 03:04:05PM"),
+			requestOptions.Method,
+			requestOptions.URL,
+			w.MaxRequests,
+			m.h.Stats.RequestsMade,
+			time.Since(m.h.Stats.StartTime),
+			m.h.Stats.RequestsFailed,
+		)
 
 		if w.MaxRequests > 0 && requestsSent >= w.MaxRequests {
 			break
 		}
-
-		delay := rand.Intn(w.MaxDelayBetweenRequests)
-
-		time.Sleep(time.Duration(delay) * time.Second)
 	}
 
 }
 
-func newManager(maxErrorCount int, userAgents RainbowTable, emails RainbowTable, passwords RainbowTable) *Manager {
+func newManager(maxErrorCount int, h *handle) *Manager {
 	return &Manager{
 		chErrorCount:  make(chan int, 1),
 		maxErrorCount: maxErrorCount,
 		workers:       make([]*Worker, 0),
 		WG:            &sync.WaitGroup{},
-		UserAgents:    userAgents,
-		Emails:        emails,
-		Passwords:     passwords,
+		h:             h,
 	}
 }
 

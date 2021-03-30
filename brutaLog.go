@@ -47,7 +47,17 @@ func main() {
 		}
 	}
 
-	manager := newManager(c.QuitOnErrorCount, userAgentTable, emailTable, passwordTable)
+	h := &handle{
+		UserAgents: userAgentTable,
+		Logins:     emailTable,
+		Passwords:  passwordTable,
+		IsVerbose:  c.VeboseMode,
+		Stats: brutaStats{
+			StartTime: time.Now(),
+		},
+	}
+
+	manager := newManager(c.QuitOnErrorCount, h)
 
 	for i := 0; i < c.WorkerCount; i++ {
 		manager.AddWorker(&Worker{

@@ -1,6 +1,9 @@
 package main
 
-import "flag"
+import (
+	"flag"
+	"os"
+)
 
 type (
 	rainbowTableConfig struct {
@@ -32,7 +35,7 @@ type (
 )
 
 func loadFlagIntoConfig() (c *bruteLogConfig) {
-	targetURLPtr := flag.String("u", "", "Target URL to send requests")
+	targetURL := flag.String("u", "", "Target URL to send requests")
 	workerCount := flag.Int("w", 1, "Number of workers to send requests.")
 	maxDelayPerRequest := flag.Int("d", 1, "Delay between requests")
 	numberOfRequests := flag.Int("c", 1, "Number of requests to target. 0 = infinite")
@@ -52,8 +55,14 @@ func loadFlagIntoConfig() (c *bruteLogConfig) {
 
 	flag.Parse()
 
+	if *targetURL == "" {
+		flag.PrintDefaults()
+		os.Exit(1)
+		return
+	}
+
 	c = &bruteLogConfig{
-		URL:                *targetURLPtr,
+		URL:                *targetURL,
 		WorkerCount:        *workerCount,
 		MaxDelayPerRequest: *maxDelayPerRequest,
 		RequestCount:       *numberOfRequests,
