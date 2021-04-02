@@ -40,10 +40,11 @@ func (w *Worker) Do(m *Manager) {
 		}
 
 		requestsSent++
-		requestOptions := w.RequestOptions
 
+		requestOptions := w.RequestOptions
 		requestOptions.UserAgent = m.h.UserAgents.GetRandomElement()
 		requestOptions.UserName = m.h.Logins.GetRandomElement()
+		requestOptions.FollowRedirects = m.h.Config.Request.FollowRedirects
 
 		if m.h.Passwords == nil {
 			requestOptions.Password = generatePassword()
@@ -53,7 +54,7 @@ func (w *Worker) Do(m *Manager) {
 
 		resp, err := sendRequest(requestOptions)
 
-		if m.h.IsVerbose {
+		if m.h.Config.VeboseMode {
 			fmt.Println("request response: ", resp.StatusCode)
 			for h, v := range resp.Header {
 				fmt.Println(h, ":", v)

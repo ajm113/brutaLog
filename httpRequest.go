@@ -23,12 +23,23 @@ type (
 		Timeout                   time.Duration
 		ForceLoginFieldsIntoQuery bool
 		IgnoreHTTPErrorCodes      bool
+		FollowRedirects           bool
 	}
 )
 
 func sendRequest(options sendRequestOptions) (resp *http.Response, err error) {
+
+	redirectFunc := func(req *http.Request, via []*http.Request) error {
+		return http.ErrUseLastResponse
+	}
+
+	if options.FollowRedirects {
+		redirectFunc = nil
+	}
+
 	client := &http.Client{
-		Timeout: options.Timeout * time.Second,
+		Timeout:       options.Timeout * time.Second,
+		CheckRedirect: redirectFunc,
 	}
 
 	newURL, err := mergeLoginFieldsIntoHTTPQuery(options)
@@ -68,7 +79,11 @@ func sendRequest(options sendRequestOptions) (resp *http.Response, err error) {
 	}
 
 	if !options.IgnoreHTTPErrorCodes {
-		if resp.StatusCode != http.StatusOK {
+
+		if resp.StatusCode != http.StatusOK &&
+			resp.StatusCode != http.StatusTemporaryRedirect &&
+			resp.StatusCode != http.StatusPermanentRedirect &&
+			resp.StatusCode != http.StatusFound {
 			return resp, fmt.Errorf("http: status code given was %d", resp.StatusCode)
 		}
 	}

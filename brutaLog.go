@@ -51,10 +51,10 @@ func main() {
 		UserAgents: userAgentTable,
 		Logins:     emailTable,
 		Passwords:  passwordTable,
-		IsVerbose:  c.VeboseMode,
 		Stats: brutaStats{
 			StartTime: time.Now(),
 		},
+		Config: c,
 	}
 
 	manager := newManager(c.QuitOnErrorCount, h)

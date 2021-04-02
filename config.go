@@ -13,12 +13,13 @@ type (
 	}
 
 	requestConfig struct {
-		Type          string
-		Method        string
-		ContentType   string
-		UserField     string
-		PasswordField string
-		Timeout       int
+		Type            string
+		Method          string
+		ContentType     string
+		UserField       string
+		PasswordField   string
+		Timeout         int
+		FollowRedirects bool
 	}
 
 	bruteLogConfig struct {
@@ -44,6 +45,7 @@ func loadFlagIntoConfig() (c *bruteLogConfig) {
 	HTTPMethod := flag.String("X", "POST", "POST method")
 	HTTPContentType := flag.String("C", "application/x-www-form-urlencoded", "Content-Type header field.")
 	HTTPTimeout := flag.Int("T", 10, "Number of seconds to timeout HTTP requests.")
+	HTTPFollowRedirect := flag.Bool("F", false, "Follows redirect requests sent by the phishing server. (usually best not to enable this)")
 
 	userFieldName := flag.String("U", "user", "User field name to send to server.")
 	passwordFieldName := flag.String("P", "password", "Password field name to send to server.")
@@ -69,11 +71,12 @@ func loadFlagIntoConfig() (c *bruteLogConfig) {
 		QuitOnErrorCount:   *quitOnNumberOfErrors,
 
 		Request: requestConfig{
-			Method:        *HTTPMethod,
-			ContentType:   *HTTPContentType,
-			UserField:     *userFieldName,
-			PasswordField: *passwordFieldName,
-			Timeout:       *HTTPTimeout,
+			Method:          *HTTPMethod,
+			ContentType:     *HTTPContentType,
+			UserField:       *userFieldName,
+			PasswordField:   *passwordFieldName,
+			Timeout:         *HTTPTimeout,
+			FollowRedirects: *HTTPFollowRedirect,
 		},
 		RainbowTable: rainbowTableConfig{
 			UserAgents: *userAgentList,

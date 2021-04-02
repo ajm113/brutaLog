@@ -15,6 +15,7 @@ type (
 		Logins     RainbowTable
 		Passwords  RainbowTable
 		Stats      brutaStats
-		IsVerbose  bool
+
+		Config *bruteLogConfig
 	}
 )
