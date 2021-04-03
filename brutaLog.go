@@ -12,7 +12,7 @@ func main() {
 
 	var (
 		userAgentTable = defaultUserAgents
-		emailTable     = defaultUserEmails
+		emailTable     []string
 		passwordTable  []string
 		err            error
 	)
@@ -61,6 +61,7 @@ func main() {
 
 	for i := 0; i < c.WorkerCount; i++ {
 		manager.AddWorker(&Worker{
+			ID:                      i,
 			MaxRequests:             c.RequestCount,
 			MaxDelayBetweenRequests: c.MaxDelayPerRequest,
 			RequestOptions: sendRequestOptions{

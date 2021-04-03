@@ -3,11 +3,11 @@ package main
 import "math/rand"
 
 const (
-	lowerCharSet   = "abcdedfghijklmnopqrst"
-	upperCharSet   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	specialCharSet = "!@#$"
-	numberSet      = "0123456789"
-	allCharSet     = lowerCharSet + upperCharSet + specialCharSet + numberSet
+	passwordLowerCharSet   = "abcdedfghijklmnopqrst"
+	passwordUpperCharSet   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	passwordSpecialCharSet = "!@#$"
+	passwordNumberSet      = "0123456789"
+	passwordAllCharSet     = passwordLowerCharSet + passwordUpperCharSet + passwordSpecialCharSet + passwordNumberSet
 )
 
 var (
@@ -39,7 +39,7 @@ func generatePassword() (outputBuffer string) {
 	minLength := rand.Intn(24)
 
 	for i := 0; i < prefixLength; i++ {
-		outputBuffer += string(allCharSet[rand.Intn(len(allCharSet))])
+		outputBuffer += string(passwordAllCharSet[rand.Intn(len(passwordAllCharSet))])
 	}
 
 	for i := 0; i < numberOfRandomWords; i++ {
@@ -50,17 +50,17 @@ func generatePassword() (outputBuffer string) {
 		}
 
 		for j := 0; j < inBetweenRandomWordRandomCharacterLength; j++ {
-			outputBuffer += string(allCharSet[rand.Intn(len(allCharSet))])
+			outputBuffer += string(passwordAllCharSet[rand.Intn(len(passwordAllCharSet))])
 		}
 	}
 
 	for i := 0; i < suffixLength; i++ {
-		outputBuffer += string(allCharSet[rand.Intn(len(allCharSet))])
+		outputBuffer += string(passwordAllCharSet[rand.Intn(len(passwordAllCharSet))])
 	}
 
 	if minLength > len(outputBuffer) {
 		for i := 0; i < (minLength - len(outputBuffer)); i++ {
-			outputBuffer += string(allCharSet[rand.Intn(len(allCharSet))])
+			outputBuffer += string(passwordAllCharSet[rand.Intn(len(passwordAllCharSet))])
 		}
 	}
 

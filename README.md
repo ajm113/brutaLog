@@ -34,7 +34,7 @@ Sends attack on website when verified that the used/other command works.
 
 * ~~Create handle for manager that keeps tabs on requests sent, error counts, verbose mode, etc...~~
 * Improved delay controls if user wants the delay to be stupped instead of random between 0 to x.
-* Add random email generator.
-* Add keep alive headers and or any missing headers the HTTP client should have.
+* ~~Add random email generator.~~
+* ~~Add keep alive headers and or any missing headers the HTTP client should have.~~
 * Add docker container for easier swarm control.
 * Add Wiki!

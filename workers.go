@@ -10,6 +10,7 @@ import (
 
 type (
 	Worker struct {
+		ID                      int
 		MaxRequests             int
 		RequestOptions          sendRequestOptions
 		MaxDelayBetweenRequests int
@@ -43,13 +44,23 @@ func (w *Worker) Do(m *Manager) {
 
 		requestOptions := w.RequestOptions
 		requestOptions.UserAgent = m.h.UserAgents.GetRandomElement()
-		requestOptions.UserName = m.h.Logins.GetRandomElement()
+
 		requestOptions.FollowRedirects = m.h.Config.Request.FollowRedirects
+
+		if m.h.Logins == nil {
+			requestOptions.UserName = generateEmail()
+		} else {
+			requestOptions.UserName = m.h.Logins.GetRandomElement()
+		}
 
 		if m.h.Passwords == nil {
 			requestOptions.Password = generatePassword()
 		} else {
 			requestOptions.Password = m.h.Passwords.GetRandomElement()
+		}
+
+		if m.h.Config.VeboseMode {
+			fmt.Println("sending login:", requestOptions.UserName, "/", requestOptions.Password)
 		}
 
 		resp, err := sendRequest(requestOptions)
@@ -75,12 +86,13 @@ func (w *Worker) Do(m *Manager) {
 
 		m.chErrorCount <- m.errorCount
 
-		fmt.Printf("[%s] request %s sent to: %s [%d:%d] elapsed time: %s | errors: %d\n",
+		fmt.Printf("[%s] request %s sent to: %s %d[%d:%d] elapsed time: %s | errors: %d\n",
 			time.Now().Format("01/02 03:04:05PM"),
 			requestOptions.Method,
 			requestOptions.URL,
+			w.ID,
 			w.MaxRequests,
-			m.h.Stats.RequestsMade,
+			requestsSent,
 			time.Since(m.h.Stats.StartTime),
 			m.h.Stats.RequestsFailed,
 		)

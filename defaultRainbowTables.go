@@ -21,29 +21,4 @@ var (
 		"Mozilla/5.0 (Linux; Android 5.0.2; LG-V410/V41020c Build/LRX22G) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/34.0.1847.118 Safari/537.36",
 		"Mozilla/5.0 (Linux; Android 4.4.3; KFTHWI Build/KTU84M) AppleWebKit/537.36 (KHTML, like Gecko) Silk/47.1.79 like Chrome/47.0.2526.80 Safari/537.36",
 	}
-
-	defaultUserEmails = RainbowTable{
-		"grinder@msn.com",
-		"citizenl@mac.com",
-		"sokol@outlook.com",
-		"rjones@comcast.net",
-		"mirod@aol.com",
-		"pappp@outlook.com",
-		"alhajj@hotmail.com",
-		"world@live.com",
-		"cantu@me.com",
-		"crowemojo@yahoo.com",
-		"tmccarth@hotmail.com",
-		"nanop@yahoo.com",
-		"horrocks@outlook.com",
-		"formis@aol.com",
-		"hikoza@sbcglobal.net",
-		"tmccarth@hotmail.com",
-		"nullchar@yahoo.com",
-		"slimshaddy@thatssopunk.com",
-		"kingjoshi@optonline.net",
-		"denisthemenes@hotmail.com",
-		"benchod@scammail.com",
-		"the.real.tim.allen@cox.net",
-	}
 )

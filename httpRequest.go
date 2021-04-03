@@ -62,6 +62,8 @@ func sendRequest(options sendRequestOptions) (resp *http.Response, err error) {
 		return nil, fmt.Errorf("NewRequest: %s", err)
 	}
 
+	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+	req.Header.Set("Connection", "keep-alive")
 	req.Header.Set("User-Agent", options.UserAgent)
 
 	if options.ContentType != "" {
