@@ -131,7 +131,7 @@ func (m *Manager) Start() {
 				ec := <-m.chErrorCount
 
 				if ec >= m.maxErrorCount {
-					fmt.Println("max error count reached! Quiting executation!")
+					fmt.Println("max error count reached! Stopping workers")
 					os.Exit(1)
 				}
 			}
