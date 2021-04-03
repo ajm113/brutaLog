@@ -7,11 +7,11 @@
 
 **NOTE: Author nor maintainers are NOT liable for users taking advantage of brutaLog against innocent websites or software!**
 
-If you feel someone is using BrutaLog against your website maliciously. Please contact your system admin or make sure your services are setup to IP block large requests that failed to auth or web services that can properly filter legitamit logins perhaps using frontend methods to ensure proper tokens are passed when a login attempt occures.
-
+If you feel someone is using BrutaLog against your website maliciously. Please contact your system admin or make sure your services are setup to IP block large requests that failed to auth or web services that can properly filter legitimate logins perhaps using frontend methods to ensure proper tokens are passed when a login attempt occurs.
 ## How does BrutaLog work?
 
-Sends random logins via rainbow table of emails and or passwords to targeted form submit URL that acts like a browser POST request that should in-theroy bloat the target phishing website database with useless logins that will also increase the phishing website expenses if the scammer doesn't have proper procations against these type of attacks.
+
+Sends random logins from table of emails and or passwords to targeted form submit URL that acts like a browser POST request that should in-theory bloat the targeted phishing website database with useless logins that will also increase the phishing website expenses if the scammer doesn't have proper precautions against these type of attacks.
 
 ## How to Build
 
